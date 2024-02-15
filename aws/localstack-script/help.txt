@@ -1,0 +1,19 @@
+https://refactorfirst.com/spring-cloud-aws-s3-localstack
+
+
+Install aws cli
+
+https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+
+Copy File Command
+
+aws s3 cp ../src/main/resources/test.txt s3://mybucket --endpoint-url http://localhost:4566
+
+If Any error run the command
+
+aws configure
+
+AWS Access Key ID [None]: Deepu
+AWS Secret Access Key [None]: Deepu
+Default region name [None]: eu-central-1
+Default output format [None]:
