@@ -17,3 +17,7 @@ AWS Access Key ID [None]: Deepu
 AWS Secret Access Key [None]: Deepu
 Default region name [None]: eu-central-1
 Default output format [None]:
+
+Swagger
+
+http://localhost:2000/swagger-ui/index.html

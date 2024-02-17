@@ -1,4 +1,4 @@
 #!/bin/bash
 awslocal s3api create-bucket \
---bucket mybucket \
+--bucket freqwordbucket \
 --create-bucket-configuration LocationConstraint=eu-central-1

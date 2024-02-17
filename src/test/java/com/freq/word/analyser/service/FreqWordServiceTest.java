@@ -1,6 +1,7 @@
 package com.freq.word.analyser.service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.freq.word.analyser.exception.InvalidArgumentException;
 import com.freq.word.analyser.request.TopWordRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,9 +32,11 @@ class FreqWordServiceTest {
     private FreqWordService freqWordService;
 
     @Test
-    void very_date_read_and_processed() throws IOException {
-        when(amazonS3.getObjectAsString("mybucket","test.txt")).thenReturn(readTextFile());
-        final TopWordRequest topWordRequest = new TopWordRequest("",3);
+    void very_date_read_and_processed() throws IOException, InvalidArgumentException {
+
+        when(amazonS3.getObjectAsString(null,"test.txt")).thenReturn(readTextFile());
+        when(amazonS3.doesObjectExist(null,"test.txt")).thenReturn(true);
+        final TopWordRequest topWordRequest = new TopWordRequest("test.txt",3);
         final Map<String,Integer> fileContent = freqWordService.processData(topWordRequest);
         assertThat(fileContent).isNotEmpty();
         assertThat(freqWordService.getRawData()).isNotEmpty();
