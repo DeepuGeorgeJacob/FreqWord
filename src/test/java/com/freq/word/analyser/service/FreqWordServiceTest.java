@@ -39,7 +39,7 @@ class FreqWordServiceTest {
         final TopWordRequest topWordRequest = new TopWordRequest("test.txt",3);
         final Map<String,Integer> fileContent = freqWordService.processData(topWordRequest);
         assertThat(fileContent).isNotEmpty();
-        assertThat(freqWordService.getRawData()).isNotEmpty();
+        assertThat(freqWordService.getRawData("test.txt")).isNotEmpty();
     }
 
     private String readTextFile() throws IOException {

@@ -29,8 +29,8 @@ public class FreqWordController {
         return ResponseEntity.ok(freqWordService.processData(request));
     }
 
-    @GetMapping
-    public ResponseEntity<String> getData() {
-        return ResponseEntity.ok(freqWordService.getRawData());
+    @GetMapping("/{fileName}")
+    public ResponseEntity<String> getData(@PathVariable("fileName") String fileName ) throws InvalidArgumentException {
+        return ResponseEntity.ok(freqWordService.getRawData(fileName));
     }
 }

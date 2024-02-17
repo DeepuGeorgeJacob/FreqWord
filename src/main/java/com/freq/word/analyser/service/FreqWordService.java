@@ -70,7 +70,10 @@ public class FreqWordService {
     }
 
 
-    public String getRawData() {
-        return amazonS3.getObjectAsString(buketName, "test.txt");
+    public String getRawData(String fileName) throws InvalidArgumentException {
+        if (!amazonS3.doesObjectExist(buketName, fileName)) {
+            throw new InvalidArgumentException(fileName + " Is not found");
+        }
+        return amazonS3.getObjectAsString(buketName, fileName);
     }
 }

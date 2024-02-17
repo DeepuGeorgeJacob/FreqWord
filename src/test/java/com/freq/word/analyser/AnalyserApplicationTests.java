@@ -68,7 +68,7 @@ class AnalyserApplicationTests {
         String s3Response = amazonS3.getObjectAsString("freqwordbucket", "test.txt");
         assertThat(s3Response).isEqualTo(readTextFile());
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/freq/word")
+		mockMvc.perform(MockMvcRequestBuilders.get("/freq/word/test.txt")
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().isOk());
     }
