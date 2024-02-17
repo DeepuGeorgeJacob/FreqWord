@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Base64;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,7 +48,7 @@ class AnalyserApplicationTests {
             .withServices(LocalStackContainer.Service.S3);
 
     @BeforeAll
-    public static void beforeAll() throws IOException, InterruptedException {
+    public static void beforeAll() {
         System.setProperty("aws.s3.service.endpoint", "http://s3.localhost.localstack.cloud:" + localStackContainer.getMappedPort(4566));
     }
 
@@ -56,6 +57,7 @@ class AnalyserApplicationTests {
     void postVerify() throws Exception {
         amazonS3.putObject("freqwordbucket", "test.txt", readTextFile());
         mockMvc.perform(MockMvcRequestBuilders.post("/freq/word")
+                        .header("Authorization", "Basic " + Base64.getEncoder().encodeToString("user:password".getBytes()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{ \"fileName\": \"test.txt\", \"k\":\"1\" }"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
@@ -69,6 +71,7 @@ class AnalyserApplicationTests {
         assertThat(s3Response).isEqualTo(readTextFile());
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/freq/word/test.txt")
+                        .header("Authorization", "Basic " + Base64.getEncoder().encodeToString("user:password".getBytes()))
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().isOk());
     }

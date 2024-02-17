@@ -2,6 +2,7 @@ package com.freq.word.analyser.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.freq.word.analyser.exception.InvalidArgumentException;
+import com.freq.word.analyser.model.Response;
 import com.freq.word.analyser.request.TopWordRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,11 +36,13 @@ public class FreqWordService {
     }
 
     @Cacheable("wordFrequencyCache")
-    public Map<String, Integer> processData(final TopWordRequest topWordRequest) throws InvalidArgumentException {
+    public Response<Map<String,Integer>> processData(final TopWordRequest topWordRequest) throws InvalidArgumentException {
         if (!amazonS3.doesObjectExist(buketName, topWordRequest.getFileName())) {
             throw new InvalidArgumentException(topWordRequest.getFileName()+ " Is not found");
         }
-        return getTopKWords(countWordFrequencyParallel(amazonS3.getObjectAsString(buketName, topWordRequest.getFileName())), topWordRequest.getK());
+        var topWords = getTopKWords(countWordFrequencyParallel(amazonS3.getObjectAsString(buketName, topWordRequest.getFileName())), topWordRequest.getK());
+
+        return new Response<>(topWords);
     }
 
 
@@ -70,10 +73,10 @@ public class FreqWordService {
     }
 
 
-    public String getRawData(String fileName) throws InvalidArgumentException {
+    public Response<String> getRawData(String fileName) throws InvalidArgumentException {
         if (!amazonS3.doesObjectExist(buketName, fileName)) {
             throw new InvalidArgumentException(fileName + " Is not found");
         }
-        return amazonS3.getObjectAsString(buketName, fileName);
+        return new Response<>(amazonS3.getObjectAsString(buketName, fileName)) ;
     }
 }

@@ -2,6 +2,7 @@ package com.freq.word.analyser.controller;
 
 
 import com.freq.word.analyser.exception.InvalidArgumentException;
+import com.freq.word.analyser.model.Response;
 import com.freq.word.analyser.request.TopWordRequest;
 import com.freq.word.analyser.service.FreqWordService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,12 +26,12 @@ public class FreqWordController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, Integer>> postData(@Valid @RequestBody final TopWordRequest request) throws InvalidArgumentException {
+    public ResponseEntity<Response<Map<String,Integer>>> postData(@Valid @RequestBody final TopWordRequest request) throws InvalidArgumentException {
         return ResponseEntity.ok(freqWordService.processData(request));
     }
 
     @GetMapping("/{fileName}")
-    public ResponseEntity<String> getData(@PathVariable("fileName") String fileName ) throws InvalidArgumentException {
+    public ResponseEntity<Response<String>> getData(@PathVariable("fileName") String fileName ) throws InvalidArgumentException {
         return ResponseEntity.ok(freqWordService.getRawData(fileName));
     }
 }
